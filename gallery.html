@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goa Photo Gallery | Explore Goa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Modern Color Palette */
+        :root {
+            --sand: #F5E8C7;
+            --sea: #1E88E5;
+            --sea-dark: #0D47A1;
+            --palm: #2E7D32;
+            --coral: #FF7043;
+            --white: #FFFFFF;
+            --black: #212121;
+            --gray: #757575;
+            --light-gray: #F5F5F5;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            color: var(--black);
+            background-color: var(--white);
+            overflow-x: hidden;
+        }
+
+        h1, h2,  h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: var(--black);
+        }
+        h3{
+            color: rgb(255, 192, 147);
+        }
+        p {
+            color: var(--white);
+            margin-bottom: 1.5rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 5rem 0;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            transition: all 0.4s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 1rem 5%;
+            background-color: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--sea-dark);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--coral);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2.5rem;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            font-size: 0.95rem;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--sea), var(--coral));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            color: var(--sea-dark);
+            font-weight: 600;
+        }
+
+        .burger {
+            display: none;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .burger div {
+            width: 25px;
+            height: 2px;
+            background-color: var(--sea-dark);
+            margin: 6px;
+            transition: all 0.3s ease;
+        }
+
+        /* Page Header */
+        .page-header {
+            padding: 8rem 0 4rem;
+            text-align: center;
+            background-color: var(--sea-dark);
+            position: relative;
+            margin-top: 70px;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+            color: var(--white);
+        }
+
+        .page-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--sea), var(--coral));
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--light-gray);
+        }
+
+        /* Gallery Filter */
+        .gallery-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 3rem 0;
+            padding: 0 20px;
+        }
+
+        .filter-btn {
+            padding: 0.8rem 1.8rem;
+            background: none;
+            border: 2px solid var(--sea);
+            color: var(--sea-dark);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background-color: var(--sea);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(30, 136, 229, 0.3);
+        }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 0 20px;
+            margin: 0 auto 4rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+
+        .gallery-item:hover .gallery-img {
+            transform: scale(1.05);
+            filter: brightness(0.9);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            color: var(--white);
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .lightbox-img {
+            max-height: 80vh;
+            max-width: 90vw;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .lightbox-caption {
+            color: var(--sea-dark);
+            margin-top: 1.5rem;
+            font-size: 1.2rem;
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .close-lightbox,
+        .prev-img,
+        .next-img {
+            position: absolute;
+            color: var(--white);
+            font-size: 2.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 2001;
+        }
+
+        .close-lightbox {
+            top: 30px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.5);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-lightbox:hover {
+            transform: rotate(90deg);
+            background: rgba(255, 112, 67, 0.8);
+        }
+
+        .prev-img,
+        .next-img {
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .prev-img:hover,
+        .next-img:hover {
+            background: rgba(255, 112, 67, 0.8);
+        }
+
+        .prev-img {
+            left: 30px;
+        }
+
+        .next-img {
+            right: 30px;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--sea-dark);
+            color: var(--white);
+            padding: 5rem 0 0;
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, var(--sea), var(--coral));
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            color: var(--white);
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--coral);
+        }
+
+        .footer-section p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-section ul li a {
+            color: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--white);
+            transform: translateX(5px);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background-color: var(--coral);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 1024px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background-color: var(--white);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.5s ease;
+                box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links li {
+                margin: 1.5rem 0;
+            }
+
+            .nav-links a {
+                color: var(--black);
+                font-size: 1.2rem;
+            }
+
+            .burger {
+                display: block;
+            }
+
+            .burger.toggle .line1 {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+
+            .burger.toggle .line2 {
+                opacity: 0;
+            }
+
+            .burger.toggle .line3 {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+
+            .page-header {
+                padding: 6rem 0 3rem;
+            }
+
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .gallery-filter {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 1rem;
+                scrollbar-width: none;
+            }
+
+            .gallery-filter::-webkit-scrollbar {
+                display: none;
+            }
+
+            .filter-btn {
+                padding: 0.6rem 1.5rem;
+                font-size: 0.85rem;
+                white-space: nowrap;
+            }
+
+            .close-lightbox,
+            .prev-img,
+            .next-img {
+                font-size: 2rem;
+            }
+
+            .close-lightbox {
+                top: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+            }
+
+            .prev-img,
+            .next-img {
+                width: 50px;
+                height: 50px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .lightbox-img {
+                max-width: 95vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">
+            Explore Goa
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="place.html">Places</a></li>
+            <li><a href="food.html">Food</a></li>
+            <li><a href="stay.html">Stay & Transport</a></li>
+            <li><a href="plan.html">Plan Trip</a></li>
+            <li><a href="gallery.html" class="active">Gallery</a></li>
+            
+        </ul>
+        <div class="burger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container">
+            <h1>Goa Photo Gallery</h1>
+            <p>Immerse yourself in the visual splendor of India's tropical paradise</p>
+        </div>
+    </header>
+
+    <!-- Gallery Filter -->
+    <div class="container">
+        <div class="gallery-filter">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="beaches">Beaches</button>
+            <button class="filter-btn" data-filter="heritage">Heritage</button>
+            <button class="filter-btn" data-filter="nature">Nature</button>
+            <button class="filter-btn" data-filter="food">Food</button>
+            <button class="filter-btn" data-filter="culture">Culture</button>
+        </div>
+    </div>
+
+    <!-- Gallery Grid -->
+    <div class="container">
+        <div class="gallery-grid">
+            <div class="gallery-item" data-category="beaches">
+                <img src="./images/palolembeach.png" alt="Palolem Beach" class="gallery-img" data-large="images/gallery/beach1-large.jpg" loading="lazy">
+                <div class="gallery-caption">
+                    <h3>Palolem Beach</h3>
+                    <p>Crescent-shaped paradise in South Goa</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-category="heritage">
+                <img src="./images/oldgoachurch.png" alt="Basilica of Bom Jesus" class="gallery-img" data-large="images/gallery/church1-large.jpg" loading="lazy">
+                <div class="gallery-caption">
+                    <h3>Basilica of Bom Jesus</h3>
+                    <p>UNESCO World Heritage Site</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-category="nature">
+                <img src="./images/dudhsagarfall.png" alt="Dudhsagar Falls" class="gallery-img" data-large="images/gallery/dudhsagar-large.jpg" loading="lazy">
+                <div class="gallery-caption">
+                    <h3>Dudhsagar Falls</h3>
+                    <p>Four-tiered waterfall in the Western Ghats</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-category="food">
+                <img src="./images/fishcurry.png" alt="Goan Fish Curry" class="gallery-img" data-large="images/gallery/food1-large.jpg" loading="lazy">
+                <div class="gallery-caption">
+                    <h3>Goan Fish Curry</h3>
+                    <p>Traditional coconut-based seafood dish</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-category="culture">
+                <img src="https://tse4.mm.bing.net/th/id/OIP.xfpQk2zdzYm3HdRcPyGBsgHaEA?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Goa Carnival" class="gallery-img" data-large="images/gallery/carnival-large.jpg" loading="lazy">
+                <div class="gallery-caption">
+                    <h3>Goa Carnival</h3>
+                    <p>Colorful Portuguese-inspired festival</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-category="beaches">
+                <img src="./images/Aguada.png" alt="Agonda Beach" class="gallery-img" data-large="images/gallery/agonda-large.jpg" loading="lazy">
+                <div class="gallery-caption">
+                    <h3>Agonda Beach</h3>
+                    <p>Serene beach with golden sands</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-category="heritage">
+                <img src="./images/Chapora .png" alt="Chapora Fort" class="gallery-img" data-large="images/gallery/fort-large.jpg" loading="lazy">
+                <div class="gallery-caption">
+                    <h3>Chapora Fort</h3>
+                    <p>Historic fort with panoramic views</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-category="nature">
+                <img src="https://cdn.getyourguide.com/img/tour/5d4bc5b432ddb.jpeg/146.jpg" alt="Spice Plantation" class="gallery-img" data-large="images/gallery/spice-large.jpg" loading="lazy">
+                <div class="gallery-caption">
+                    <h3>Spice Plantation</h3>
+                    <p>Lush gardens with aromatic spices</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox">
+        <span class="close-lightbox">&times;</span>
+        <span class="prev-img">&lt;</span>
+        <span class="next-img">&gt;</span>
+        <div class="lightbox-content">
+            <img class="lightbox-img" alt="Lightbox Image">
+            <div class="lightbox-caption"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Explore Goa</h3>
+                    <p>Your ultimate guide to India's tropical paradise, helping you discover the real Goa beyond the beaches.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="place.html">Places to Visit</a></li>
+                        <li><a href="food.html">Goan Cuisine</a></li>
+                        <li><a href="stay.html">Accommodation</a></li>
+                        <li><a href="plan.html">Trip Planner</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Panaji, Goa, India</p>
+                    <p><i class="fas fa-phone"></i> +91 9876543210</p>
+                    <p><i class="fas fa-envelope"></i> hello@exploregoa.com</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2023 Explore Goa. All rights reserved. | Designed with <i class="fas fa-heart" style="color: #FF7043;"></i> for Goa</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const burger = document.querySelector('.burger');
+        const navLinks = document.querySelector('.nav-links');
+        const navItems = document.querySelectorAll('.nav-links li');
+
+        burger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            burger.classList.toggle('toggle');
+            document.body.classList.toggle('no-scroll');
+        });
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                burger.classList.remove('toggle');
+                document.body.classList.remove('no-scroll');
+            });
+        });
+
+        // Gallery Filter
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                const filter = button.dataset.filter;
+                
+                galleryItems.forEach(item => {
+                    if (filter === 'all' || item.dataset.category === filter) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Lightbox functionality
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.querySelector('.lightbox-img');
+        const lightboxCaption = document.querySelector('.lightbox-caption');
+        const closeLightbox = document.querySelector('.close-lightbox');
+        const prevBtn = document.querySelector('.prev-img');
+        const nextBtn = document.querySelector('.next-img');
+        const galleryImages = document.querySelectorAll('.gallery-img');
+        
+        let currentImageIndex = 0;
+        const images = [];
+        const captions = [];
+        
+        // Prepare images and captions arrays
+        galleryImages.forEach((img, index) => {
+            images.push(img.dataset.large);
+            captions.push(img.alt);
+            
+            img.addEventListener('click', () => {
+                currentImageIndex = index;
+                openLightbox(currentImageIndex);
+            });
+        });
+        
+        function openLightbox(index) {
+            lightbox.classList.add('active');
+            lightboxImg.src = images[index];
+            lightboxCaption.textContent = captions[index];
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeLightboxFunc() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        function showPrevImage() {
+            currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+            lightboxImg.src = images[currentImageIndex];
+            lightboxCaption.textContent = captions[currentImageIndex];
+        }
+        
+        function showNextImage() {
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            lightboxImg.src = images[currentImageIndex];
+            lightboxCaption.textContent = captions[currentImageIndex];
+        }
+        
+        closeLightbox.addEventListener('click', closeLightboxFunc);
+        prevBtn.addEventListener('click', showPrevImage);
+        nextBtn.addEventListener('click', showNextImage);
+        
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightboxFunc();
+            }
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'Escape') {
+                    closeLightboxFunc();
+                } else if (e.key === 'ArrowLeft') {
+                    showPrevImage();
+                } else if (e.key === 'ArrowRight') {
+                    showNextImage();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
