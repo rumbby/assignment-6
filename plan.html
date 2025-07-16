@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Your Goa Trip | Explore Goa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Modern Color Palette */
+        :root {
+            --sand: #F5E8C7;
+            --sea: #1E88E5;
+            --sea-dark: #0D47A1;
+            --palm: #2E7D32;
+            --coral: #FF7043;
+            --white: #FFFFFF;
+            --black: #212121;
+            --gray: #757575;
+            --light-gray: #F5F5F5;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            color: var(--black);
+            background-color: var(--white);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: var(--black);
+        }
+
+        p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 5rem 0;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            transition: all 0.4s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 1rem 5%;
+            background-color: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--sea-dark);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--coral);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2.5rem;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            font-size: 0.95rem;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--sea), var(--coral));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            color: var(--sea-dark);
+            font-weight: 600;
+        }
+
+        .burger {
+            display: none;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .burger div {
+            width: 25px;
+            height: 2px;
+            background-color: var(--sea-dark);
+            margin: 6px;
+            transition: all 0.3s ease;
+        }
+
+        /* Page Header */
+        .page-header {
+            padding: 8rem 0 4rem;
+            text-align: center;
+            background-color: var(--light-gray);
+            position: relative;
+            margin-top: 70px;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .page-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--sea), var(--coral));
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--gray);
+        }
+
+        /* Planner Form */
+        .planner-form {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: var(--sea-dark);
+        }
+
+        select, input[type="text"], input[type="email"] {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--light-gray);
+            border-radius: 4px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input[type="text"]:focus, input[type="email"]:focus {
+            border-color: var(--sea);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.2);
+        }
+
+        .checkbox-group, .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .checkbox-group label, .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-group label:hover, .radio-group label:hover {
+            color: var(--sea-dark);
+        }
+
+        input[type="checkbox"], input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--sea);
+            cursor: pointer;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--coral);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--sea-dark);
+            box-shadow: 0 5px 20px rgba(255, 112, 67, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Itinerary Display */
+        .itinerary-display {
+            background-color: var(--light-gray);
+            border-radius: 8px;
+            padding: 3rem;
+            margin-bottom: 4rem;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-spinner {
+            display: none;
+            text-align: center;
+        }
+
+        .loading-spinner.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(30, 136, 229, 0.2);
+            border-top-color: var(--sea);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Budget Calculator */
+        .budget-calculator {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .calculator-item {
+            margin-bottom: 1.5rem;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+           
+            background: var(--light-gray);
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--sea);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .total-budget {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: var(--sea-dark);
+            color: var(--white);
+            border-radius: 8px;
+        }
+
+        .total-budget h3 {
+            color: var(--white);
+            margin-bottom: 0;
+        }
+
+        #total-value {
+            color: var(--coral);
+            font-size: 1.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--sea-dark);
+            color: var(--white);
+            padding: 5rem 0 0;
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, var(--sea), var(--coral));
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            color: var(--white);
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--coral);
+        }
+
+        .footer-section p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-section ul li a {
+            color: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--white);
+            transform: translateX(5px);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background-color: var(--coral);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background-color: var(--white);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.5s ease;
+                box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links li {
+                margin: 1.5rem 0;
+            }
+
+            .nav-links a {
+                color: var(--black);
+                font-size: 1.2rem;
+            }
+
+            .burger {
+                display: block;
+            }
+
+            .burger.toggle .line1 {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+
+            .burger.toggle .line2 {
+                opacity: 0;
+            }
+
+            .burger.toggle .line3 {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+
+            .page-header {
+                padding: 6rem 0 3rem;
+            }
+
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .planner-form, .itinerary-display, .budget-calculator {
+                padding: 2rem;
+            }
+
+            .checkbox-group, .radio-group {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">
+ 
+            Explore Goa
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="place.html">Places</a></li>
+            <li><a href="food.html">Food</a></li>
+            <li><a href="stay.html">Stay & Transport</a></li>
+            <li><a href="plan.html" class="active">Plan Trip</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+        <div class="burger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container">
+            <h1>Plan Your Goa Trip</h1>
+            <p>Create your perfect itinerary with our interactive planner</p>
+        </div>
+    </header>
+
+    <!-- Trip Planner Form -->
+    <section class="container">
+        <div class="planner-form">
+            <form id="trip-planner">
+                <div class="form-group">
+                    <label for="trip-days">Trip Duration</label>
+                    <select id="trip-days" name="trip-days" required>
+                        <option value="" disabled selected>Select days</option>
+                        <option value="3">3 Days</option>
+                        <option value="5">5 Days</option>
+                        <option value="7">7 Days</option>
+                        <option value="10">10+ Days</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Travel Interests</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="interest" value="beaches"> Beaches</label>
+                        <label><input type="checkbox" name="interest" value="heritage"> Heritage</label>
+                        <label><input type="checkbox" name="interest" value="nature"> Nature</label>
+                        <label><input type="checkbox" name="interest" value="adventure"> Adventure</label>
+                        <label><input type="checkbox" name="interest" value="nightlife"> Nightlife</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Travel Style</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="style" value="relaxed" checked> Relaxed</label>
+                        <label><input type="radio" name="style" value="balanced"> Balanced</label>
+                        <label><input type="radio" name="style" value="active"> Active</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Budget Range (per day)</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="budget" value="budget" checked> Budget (₹1,000-3,000)</label>
+                        <label><input type="radio" name="budget" value="mid"> Mid-range (₹3,000-7,000)</label>
+                        <label><input type="radio" name="budget" value="luxury"> Luxury (₹7,000+)</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Generate Itinerary</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Itinerary Display -->
+    <section class="container">
+        <div class="itinerary-display" id="itinerary-display">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p>Creating your personalized Goa itinerary...</p>
+            </div>
+            <!-- Dynamic content will be loaded here -->
+        </div>
+    </section>
+
+    <!-- Budget Calculator -->
+    <section class="container">
+        <div class="budget-calculator">
+            <h2>Budget Calculator</h2>
+            <div class="calculator-grid">
+                <div class="calculator-item">
+                    <label for="accom-budget">Accommodation (per night)</label>
+                    <input type="range" id="accom-budget" min="500" max="15000" value="2500" step="500">
+                    <span id="accom-value">₹2,500</span>
+                </div>
+                
+                <div class="calculator-item">
+                    <label for="food-budget">Food & Drinks</label>
+                    <input type="range" id="food-budget" min="300" max="5000" value="1500" step="100">
+                    <span id="food-value">₹1,500</span>
+                </div>
+                
+                <div class="calculator-item">
+                    <label for="transport-budget">Transport</label>
+                    <input type="range" id="transport-budget" min="200" max="3000" value="800" step="100">
+                    <span id="transport-value">₹800</span>
+                </div>
+                
+                <div class="calculator-item">
+                    <label for="activities-budget">Activities</label>
+                    <input type="range" id="activities-budget" min="0" max="5000" value="1000" step="100">
+                    <span id="activities-value">₹1,000</span>
+                </div>
+            </div>
+            <div class="total-budget">
+                <h3>Estimated Daily Budget: <span id="total-value">₹5,800</span></h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Explore Goa</h3>
+                    <p>Your ultimate guide to India's tropical paradise, helping you discover the real Goa beyond the beaches.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="place.html">Places to Visit</a></li>
+                        <li><a href="food.html">Goan Cuisine</a></li>
+                        <li><a href="stay.html">Accommodation</a></li>
+                        <li><a href="plan.html">Trip Planner</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Panaji, Goa, India</p>
+                    <p><i class="fas fa-phone"></i> +91 9876543210</p>
+                    <p><i class="fas fa-envelope"></i> hello@exploregoa.com</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2023 Explore Goa. All rights reserved. | Designed with <i class="fas fa-heart" style="color: #FF7043;"></i> for Goa</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const burger = document.querySelector('.burger');
+        const navLinks = document.querySelector('.nav-links');
+        const navItems = document.querySelectorAll('.nav-links li');
+
+        burger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            burger.classList.toggle('toggle');
+            document.body.classList.toggle('no-scroll');
+        });
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                burger.classList.remove('toggle');
+                document.body.classList.remove('no-scroll');
+            });
+        });
+
+        // Budget Calculator Functionality
+        const accomSlider = document.getElementById('accom-budget');
+        const foodSlider = document.getElementById('food-budget');
+        const transportSlider = document.getElementById('transport-budget');
+        const activitiesSlider = document.getElementById('activities-budget');
+        
+        const accomValue = document.getElementById('accom-value');
+        const foodValue = document.getElementById('food-value');
+        const transportValue = document.getElementById('transport-value');
+        const activitiesValue = document.getElementById('activities-value');
+        const totalValue = document.getElementById('total-value');
+        
+        function updateBudget() {
+            const accom = parseInt(accomSlider.value);
+            const food = parseInt(foodSlider.value);
+            const transport = parseInt(transportSlider.value);
+            const activities = parseInt(activitiesSlider.value);
+            
+            const total = accom + food + transport + activities;
+            
+            accomValue.textContent = `₹${accom.toLocaleString('en-IN')}`;
+            foodValue.textContent = `₹${food.toLocaleString('en-IN')}`;
+            transportValue.textContent = `₹${transport.toLocaleString('en-IN')}`;
+            activitiesValue.textContent = `₹${activities.toLocaleString('en-IN')}`;
+            totalValue.textContent = `₹${total.toLocaleString('en-IN')}`;
+        }
+        
+        // Add event listeners to all sliders
+        [accomSlider, foodSlider, transportSlider, activitiesSlider].forEach(slider => {
+            slider.addEventListener('input', updateBudget);
+        });
+        
+        // Initialize budget display
+        updateBudget();
+
+        // Form submission handler
+        const tripForm = document.getElementById('trip-planner');
+        const itineraryDisplay = document.getElementById('itinerary-display');
+        const loadingSpinner = document.querySelector('.loading-spinner');
+        
+        tripForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show loading spinner
+            loadingSpinner.classList.add('active');
+            itineraryDisplay.innerHTML = '';
+            itineraryDisplay.appendChild(loadingSpinner);
+            
+            // Simulate API call with timeout
+            setTimeout(() => {
+                loadingSpinner.classList.remove('active');
+                
+                // Generate sample itinerary (in a real app, this would come from your backend)
+                const days = parseInt(document.getElementById('trip-days').value) || 3;
+                const interests = Array.from(document.querySelectorAll('input[name="interest"]:checked')).map(el => el.value);
+                const style = document.querySelector('input[name="style"]:checked').value;
+                const budget = document.querySelector('input[name="budget"]:checked').value;
+                
+                // Create itinerary HTML
+                let itineraryHTML = `<h2>Your ${days}-Day Goa Itinerary</h2>`;
+                itineraryHTML += `<div class="itinerary-summary">
+                    <p><strong>Interests:</strong> ${interests.join(', ')}</p>
+                    <p><strong>Travel Style:</strong> ${style.charAt(0).toUpperCase() + style.slice(1)}</p>
+                    <p><strong>Budget Level:</strong> ${budget.charAt(0).toUpperCase() + budget.slice(1)}</p>
+                </div>`;
+                
+                // Add day-by-day plan
+                for (let i = 1; i <= days; i++) {
+                    itineraryHTML += `
+                    <div class="itinerary-day">
+                        <h3>Day ${i}</h3>
+                        <div class="day-activities">
+                            <div class="activity">
+                                <h4>Morning</h4>
+                                <p>Beach visit and water activities</p>
+                            </div>
+                            <div class="activity">
+                                <h4>Afternoon</h4>
+                                <p>Local Goan restaurant for lunch</p>
+                            </div>
+                            <div class="activity">
+                                <h4>Evening</h4>
+                                <p>Explore local markets and sunset views</p>
+                            </div>
+                        </div>
+                    </div>`;
+                }
+                
+                // Add budget summary
+                itineraryHTML += `
+                <div class="itinerary-budget">
+                    <h3>Estimated Budget</h3>
+                    <p>Based on your selections, your estimated daily budget is: <strong>${totalValue.textContent}</strong></p>
+                    <p>Total for ${days} days: <strong>₹${(parseInt(totalValue.textContent.replace(/[^0-9]/g, '')) * days).toLocaleString('en-IN')}</strong></p>
+                </div>`;
+                
+                itineraryDisplay.innerHTML = itineraryHTML;
+                
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

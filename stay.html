@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stay & Transport in Goa | Explore Goa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Modern Color Palette */
+        :root {
+            --sand: #F5E8C7;
+            --sea: #1E88E5;
+            --sea-dark: #0D47A1;
+            --palm: #2E7D32;
+            --coral: #FF7043;
+            --white: #FFFFFF;
+            --black: #212121;
+            --gray: #757575;
+            --light-gray: #F5F5F5;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            color: var(--black);
+            background-color: var(--white);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: var(--black);
+        }
+
+        p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 5rem 0;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            transition: all 0.4s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 1rem 5%;
+            background-color: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--sea-dark);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--coral);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2.5rem;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            font-size: 0.95rem;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--sea), var(--coral));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            color: var(--sea-dark);
+            font-weight: 600;
+        }
+
+        .burger {
+            display: none;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .burger div {
+            width: 25px;
+            height: 2px;
+            background-color: var(--sea-dark);
+            margin: 6px;
+            transition: all 0.3s ease;
+        }
+
+        /* Page Header */
+        .page-header {
+            padding: 8rem 0 4rem;
+            text-align: center;
+            background: linear-gradient(var(--sea-dark), rgba(170, 0, 0, 0.3)), 
+                        url('https://media-cdn.tripadvisor.com/media/photo-s/13/17/8f/df/sunrise.jpg') center/cover no-repeat;
+            position: relative;
+            margin-top: 90px;
+            height: 40vh;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+            color: var(--white);
+        }
+
+        .page-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--sea), var(--coral));
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--light-gray);
+        }
+
+        /* Accommodation Section */
+        .accommodation {
+            background-color: var(--white);
+            padding: 4rem 0;
+        }
+
+        .accom-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0 3rem;
+        }
+
+        .accom-btn {
+            padding: 0.8rem 1.8rem;
+            background: none;
+            border: 2px solid var(--sea);
+            color: var(--sea-dark);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .accom-btn.active,
+        .accom-btn:hover {
+            background-color: var(--sea);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(30, 136, 229, 0.3);
+        }
+
+        .accom-panel {
+            display: none;
+        }
+
+        .accom-panel.active {
+            display: block;
+        }
+
+        .accom-card {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .accom-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .accom-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .accom-card:hover img {
+            transform: scale(1.03);
+        }
+
+        .accom-info {
+            padding: 2rem;
+        }
+
+        .accom-info h3 {
+            color: var(--sea-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .accom-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        .price-range {
+            color: var(--coral);
+            font-weight: 600;
+        }
+
+        .best-areas {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .best-areas::before {
+            content: '📍';
+            position: absolute;
+            left: 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--sea-dark);
+            border: 2px solid var(--sea);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--sea);
+            color: var(--white);
+            box-shadow: 0 5px 15px rgba(30, 136, 229, 0.3);
+        }
+
+        /* Transport Section */
+        .transport {
+            background-color: var(--light-gray);
+            padding: 4rem 0;
+        }
+
+        .transport-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .transport-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .transport-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .transport-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .transport-card h3 {
+            color: var(--sea-dark);
+            margin: 1rem 1.5rem 0.5rem;
+        }
+
+        .transport-card p {
+            margin: 0 1.5rem 1rem;
+            font-size: 0.95rem;
+        }
+
+        .transport-details {
+            margin: 1.5rem;
+            list-style: none;
+        }
+
+        .transport-details li {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .transport-details strong {
+            color: var(--sea-dark);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--sea-dark);
+            color: var(--white);
+            padding: 5rem 0 0;
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, var(--sea), var(--coral));
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            color: var(--white);
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--coral);
+        }
+
+        .footer-section p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-section ul li a {
+            color: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--white);
+            transform: translateX(5px);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background-color: var(--coral);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 1024px) {
+            .transport-options {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background-color: var(--white);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.5s ease;
+                box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links li {
+                margin: 1.5rem 0;
+            }
+
+            .nav-links a {
+                color: var(--black);
+                font-size: 1.2rem;
+            }
+
+            .burger {
+                display: block;
+            }
+
+            .burger.toggle .line1 {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+
+            .burger.toggle .line2 {
+                opacity: 0;
+            }
+
+            .burger.toggle .line3 {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+
+            .page-header {
+                padding: 6rem 0 3rem;
+            }
+
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .accom-tabs {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 1rem;
+                scrollbar-width: none;
+            }
+
+            .accom-tabs::-webkit-scrollbar {
+                display: none;
+            }
+
+            .accom-btn {
+                padding: 0.6rem 1.5rem;
+                font-size: 0.85rem;
+                white-space: nowrap;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .accom-card {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">
+         
+            Explore Goa
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="place.html">Places</a></li>
+            <li><a href="food.html">Food</a></li>
+            <li><a href="stay.html" class="active">Stay & Transport</a></li>
+            <li><a href="plan.html">Plan Trip</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+        <div class="burger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container">
+            <h1>Stay & Transport in Goa</h1>
+            <p>Find the perfect accommodation and get around with ease</p>
+        </div>
+    </header>
+
+    <!-- Accommodation Section -->
+    <section class="accommodation container">
+        <h2>Where to Stay</h2>
+        
+        <div class="accom-tabs">
+            <button class="accom-btn active" data-accom="hotels">Hotels</button>
+            <button class="accom-btn" data-accom="resorts">Resorts</button>
+            <button class="accom-btn" data-accom="homestays">Homestays</button>
+            <button class="accom-btn" data-accom="hostels">Hostels</button>
+        </div>
+
+        <div class="accom-content">
+            <!-- Hotels -->
+            <div class="accom-panel active" id="hotels">
+                <div class="accom-card">
+                    <img src="https://3.bp.blogspot.com/-BIQUHt3_1RY/XOIzWFB2FTI/AAAAAAAAACM/O2OrJzEPKP8qwDONEPJN9EBgQIZvZo8JgCLcBGAs/s1600/Luxury%2BBeach%2BHotel%2BNorth%2BGoa.jpg" alt="Luxury Hotel" loading="lazy">
+                    <div class="accom-info">
+                        <h3>Luxury Hotels</h3>
+                        <p>5-star properties with beachfront locations and premium amenities</p>
+                        <div class="accom-details">
+                            <span class="price-range">₹15,000+ per night</span>
+                            <span class="best-areas">Best areas: Candolim, Baga, Mobor</span>
+                        </div>
+                        <a href="#" class="btn btn-outline">View Options</a>
+                    </div>
+                </div>
+                
+                <div class="accom-card">
+                    <img src="https://media-cdn.tripadvisor.com/media/photo-s/0b/51/be/d7/facade.jpg" alt="Boutique Hotel" loading="lazy">
+                    <div class="accom-info">
+                        <h3>Boutique Hotels</h3>
+                        <p>Charming, intimate properties with unique design and personalized service</p>
+                        <div class="accom-details">
+                            <span class="price-range">₹7,000-15,000 per night</span>
+                            <span class="best-areas">Best areas: Anjuna, Vagator, Palolem</span>
+                        </div>
+                        <a href="#" class="btn btn-outline">View Options</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resorts -->
+            <div class="accom-panel" id="resorts">
+                <div class="accom-card">
+                    <img src="https://media.radissonhotels.net/image/radisson-hotel-goa-candolim/poolview/16256-114068-f67036601_3xl.jpg?impolicy=HomeHero" alt="Beach Resort" loading="lazy">
+                    <div class="accom-info">
+                        <h3>Beach Resorts</h3>
+                        <p>All-inclusive properties with private beach access and multiple dining options</p>
+                        <div class="accom-details">
+                            <span class="price-range">₹10,000-25,000 per night</span>
+                            <span class="best-areas">Best areas: Colva, Varca, Cavelossim</span>
+                        </div>
+                        <a href="#" class="btn btn-outline">View Options</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Homestays -->
+            <div class="accom-panel" id="homestays">
+                <div class="accom-card">
+                    <img src="https://tse1.mm.bing.net/th/id/OIP.QepawZLsEJkw-7svtjIGSQHaFj?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Goan Homestay" loading="lazy">
+                    <div class="accom-info">
+                        <h3>Goan Homestays</h3>
+                        <p>Experience local hospitality in traditional Portuguese-style homes</p>
+                        <div class="accom-details">
+                            <span class="price-range">₹2,000-6,000 per night</span>
+                            <span class="best-areas">Best areas: Saligao, Siolim, Aldona</span>
+                        </div>
+                        <a href="#" class="btn btn-outline">View Options</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hostels -->
+            <div class="accom-panel" id="hostels">
+                <div class="accom-card">
+                    <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/172062501.jpg?k=9ddba8916b038d496670258046bd1cd587b421f7d4d1bfa8bdd467148385d6ae&o=&hp=1" alt="Beach Hostel" loading="lazy">
+                    <div class="accom-info">
+                        <h3>Beach Hostels</h3>
+                        <p>Budget-friendly social accommodations near popular beaches</p>
+                        <div class="accom-details">
+                            <span class="price-range">₹500-1,500 per bed</span>
+                            <span class="best-areas">Best areas: Arambol, Anjuna, Palolem</span>
+                        </div>
+                        <a href="#" class="btn btn-outline">View Options</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Transport Section -->
+    <section class="transport container">
+        <h2>Getting Around Goa</h2>
+        
+        <div class="transport-options">
+            <div class="transport-card">
+                <img src="https://tripmore.in/wp-content/uploads/2024/01/Beach-at-Goa-with-Bike-rent-2048x2048.jpg" alt="Bike Rental" loading="lazy">
+                <h3>Bike Rentals</h3>
+                <p>The most popular way to explore Goa at your own pace</p>
+                <ul class="transport-details">
+                    <li><strong>Cost:</strong> ₹300-500 per day</li>
+                    <li><strong>Requirements:</strong> Valid license (international accepted)</li>
+                    <li><strong>Best for:</strong> Solo travelers and couples</li>
+                </ul>
+            </div>
+
+            <div class="transport-card">
+                <img src="https://www.golokaso.com/wp-content/uploads/2018/10/60904-gmtsgejsuf-1497806977.jpg" alt="Taxis" loading="lazy">
+                <h3>Taxis & Cabs</h3>
+                <p>Convenient but more expensive option for groups</p>
+                <ul class="transport-details">
+                    <li><strong>Cost:</strong> ₹12-15 per km</li>
+                    <li><strong>Tip:</strong> Negotiate rates before boarding</li>
+                    <li><strong>Best for:</strong> Families and groups</li>
+                </ul>
+            </div>
+
+            <div class="transport-card">
+                <img src="https://tse1.mm.bing.net/th/id/OIP.4IabJqZIuSnEj73k86senQHaE7?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Buses" loading="lazy">
+                <h3>Public Buses</h3>
+                <p>Economical option connecting major towns and beaches</p>
+                <ul class="transport-details">
+                    <li><strong>Cost:</strong> ₹10-50 per ride</li>
+                    <li><strong>Tip:</strong> Ask locals for routes and timings</li>
+                    <li><strong>Best for:</strong> Budget travelers</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Explore Goa</h3>
+                    <p>Your ultimate guide to India's tropical paradise, helping you discover the real Goa beyond the beaches.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="place.html">Places to Visit</a></li>
+                        <li><a href="food.html">Goan Cuisine</a></li>
+                        <li><a href="stay.html">Stay & Transport</a></li>
+                        <li><a href="plan.html">Trip Planner</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Panaji, Goa, India</p>
+                    <p><i class="fas fa-phone"></i> +91 9876543210</p>
+                    <p><i class="fas fa-envelope"></i> hello@exploregoa.com</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2023 Explore Goa. All rights reserved. | Designed with <i class="fas fa-heart" style="color: #FF7043;"></i> for Goa</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const burger = document.querySelector('.burger');
+        const navLinks = document.querySelector('.nav-links');
+        const navItems = document.querySelectorAll('.nav-links li');
+
+        burger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            burger.classList.toggle('toggle');
+            document.body.classList.toggle('no-scroll');
+        });
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                burger.classList.remove('toggle');
+                document.body.classList.remove('no-scroll');
+            });
+        });
+
+        // Accommodation tabs functionality
+        const accomButtons = document.querySelectorAll('.accom-btn');
+        const accomPanels = document.querySelectorAll('.accom-panel');
+
+        accomButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and panels
+                accomButtons.forEach(btn => btn.classList.remove('active'));
+                accomPanels.forEach(panel => panel.classList.remove('active'));
+                
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                // Show corresponding panel
+                const panelId = button.dataset.accom;
+                document.getElementById(panelId).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

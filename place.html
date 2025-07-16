@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Places to Visit in Goa | Explore Goa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Modern Color Palette */
+        :root {
+            --sand: #F5E8C7;
+            --sea: #1E88E5;
+            --sea-dark: #0D47A1;
+            --palm: #2E7D32;
+            --coral: #FF7043;
+            --white: #FFFFFF;
+            --black: #212121;
+            --gray: #757575;
+            --light-gray: #F5F5F5;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            color: var(--black);
+            background-color: var(--white);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: var(--black);
+        }
+
+        p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 5rem 0;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            transition: all 0.4s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 1rem 5%;
+            background-color: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--sea-dark);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--coral);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2.5rem;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            font-size: 0.95rem;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--sea), var(--coral));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            color: var(--sea-dark);
+            font-weight: 600;
+        }
+
+        .burger {
+            display: none;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .burger div {
+            width: 25px;
+            height: 2px;
+            background-color: var(--sea-dark);
+            margin: 6px;
+            transition: all 0.3s ease;
+        }
+
+        /* Page Header */
+        .page-header {
+            padding: 8rem 0 4rem;
+            text-align: center;
+            background-color: var(--sea-dark);
+            position: relative;
+            margin-top: 70px;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+            color: #ffffff;
+        }
+
+        .page-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--sea), var(--coral));
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--light-gray);
+        }
+
+        /* Filter Buttons */
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 3rem 0;
+            padding: 0 20px;
+        }
+
+        .filter-btn {
+            padding: 0.8rem 1.8rem;
+            background: none;
+            border: 2px solid var(--sea);
+            color: var(--sea-dark);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background-color: var(--sea);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(30, 136, 229, 0.3);
+        }
+
+        /* Places Grid */
+        .places-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            padding: 0 20px;
+            margin: 0 auto 4rem;
+        }
+
+        .place-card {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .place-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .place-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+
+        .place-card:hover .place-img {
+            transform: scale(1.05);
+            filter: brightness(0.9);
+        }
+
+        .place-info {
+            padding: 1.5rem;
+            background-color: var(--white);
+        }
+
+        .place-info h3 {
+            color: var(--sea-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .place-info p {
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .place-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .place-tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--coral);
+            color: var(--white);
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Map Section */
+        .map-section {
+            background-color: var(--light-gray);
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .map-section h2 {
+            margin-bottom: 1.5rem;
+        }
+
+        #goa-map {
+            height: 500px;
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .map-note {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--sea-dark);
+            color: var(--white);
+            padding: 5rem 0 0;
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, var(--sea), var(--coral));
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            color: var(--white);
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--coral);
+        }
+
+        .footer-section p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-section ul li a {
+            color: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--white);
+            transform: translateX(5px);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background-color: var(--coral);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 1024px) {
+            .places-container {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+            
+            #goa-map {
+                height: 400px;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background-color: var(--white);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.5s ease;
+                box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links li {
+                margin: 1.5rem 0;
+            }
+
+            .nav-links a {
+                color: var(--black);
+                font-size: 1.2rem;
+            }
+
+            .burger {
+                display: block;
+            }
+
+            .burger.toggle .line1 {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+
+            .burger.toggle .line2 {
+                opacity: 0;
+            }
+
+            .burger.toggle .line3 {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+
+            .page-header {
+                padding: 6rem 0 3rem;
+            }
+
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .filter-buttons {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 1rem;
+                scrollbar-width: none;
+            }
+
+            .filter-buttons::-webkit-scrollbar {
+                display: none;
+            }
+
+            .filter-btn {
+                padding: 0.6rem 1.5rem;
+                font-size: 0.85rem;
+                white-space: nowrap;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .places-container {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            #goa-map {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">
+            Explore Goa
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="place.html" class="active">Places</a></li>
+            <li><a href="food.html">Food</a></li>
+            <li><a href="stay.html">Stay & Transport</a></li>
+            <li><a href="plan.html">Plan Trip</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+        <div class="burger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container">
+            <h1>Places to Visit in Goa</h1>
+            <p>Discover the diverse attractions of India's beach paradise</p>
+        </div>
+    </header>
+
+    <!-- Filter Buttons -->
+    <div class="container">
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">All Places</button>
+            <button class="filter-btn" data-filter="beach">Beaches</button>
+            <button class="filter-btn" data-filter="fort">Forts</button>
+            <button class="filter-btn" data-filter="church">Churches</button>
+            <button class="filter-btn" data-filter="nature">Nature</button>
+        </div>
+    </div>
+
+    <!-- Places Grid -->
+    <section class="container">
+        <div class="places-container" id="places-container">
+            <!-- Place Card 1 -->
+            <div class="place-card" data-category="beach">
+                <span class="place-tag">Beach</span>
+                <img src="./images/calungute.png" alt="Calangute Beach" class="place-img" loading="lazy">
+                <div class="place-info">
+                    <h3>Calangute Beach</h3>
+                    <p>The largest beach in North Goa, known as the "Queen of Beaches" with golden sands and vibrant nightlife.</p>
+                    <div class="place-meta">
+                        <span><i class="fas fa-map-marker-alt"></i> North Goa</span>
+                        <span><i class="fas fa-clock"></i> Full Day</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Place Card 2 -->
+            <div class="place-card" data-category="fort">
+                <span class="place-tag">Fort</span>
+                <img src="./images/Aguada.png" alt="Fort Aguada" class="place-img" loading="lazy">
+                <div class="place-info">
+                    <h3>Fort Aguada</h3>
+                    <p>17th-century Portuguese fort with a lighthouse and panoramic views of the Arabian Sea.</p>
+                    <div class="place-meta">
+                        <span><i class="fas fa-map-marker-alt"></i> Sinquerim</span>
+                        <span><i class="fas fa-clock"></i> 2-3 Hours</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Place Card 3 -->
+            <div class="place-card" data-category="church">
+                <span class="place-tag">Church</span>
+                <img src="./images/oldgoachurch.png" alt="Basilica of Bom Jesus" class="place-img" loading="lazy">
+                <div class="place-info">
+                    <h3>Basilica of Bom Jesus</h3>
+                    <p>UNESCO World Heritage Site housing the mortal remains of St. Francis Xavier.</p>
+                    <div class="place-meta">
+                        <span><i class="fas fa-map-marker-alt"></i> Old Goa</span>
+                        <span><i class="fas fa-clock"></i> 1-2 Hours</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Place Card 4 -->
+            <div class="place-card" data-category="nature">
+                <span class="place-tag">Nature</span>
+                <img src="./images/dudhsagarfall.png" alt="Dudhsagar Falls" class="place-img" loading="lazy">
+                <div class="place-info">
+                    <h3>Dudhsagar Falls</h3>
+                    <p>Four-tiered waterfall cascading down from 310 meters in the Western Ghats.</p>
+                    <div class="place-meta">
+                        <span><i class="fas fa-map-marker-alt"></i> Bhagwan Mahavir Sanctuary</span>
+                        <span><i class="fas fa-clock"></i> Full Day</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Place Card 5 -->
+            <div class="place-card" data-category="beach">
+                <span class="place-tag">Beach</span>
+                <img src="./images/palolembeach.png" alt="Palolem Beach" class="place-img" loading="lazy">
+                <div class="place-info">
+                    <h3>Palolem Beach</h3>
+                    <p>Serene crescent-shaped beach in South Goa with calm waters and coconut palms.</p>
+                    <div class="place-meta">
+                        <span><i class="fas fa-map-marker-alt"></i> Canacona</span>
+                        <span><i class="fas fa-clock"></i> Full Day</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Place Card 6 -->
+            <div class="place-card" data-category="fort">
+                <span class="place-tag">Fort</span>
+                <img src="./images/Chapora .png" alt="Chapora Fort" class="place-img" loading="lazy">
+                <div class="place-info">
+                    <h3>Chapora Fort</h3>
+                    <p>Historic fort made famous by the movie "Dil Chahta Hai" with stunning sunset views.</p>
+                    <div class="place-meta">
+                        <span><i class="fas fa-map-marker-alt"></i> Vagator</span>
+                        <span><i class="fas fa-clock"></i> 1-2 Hours</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="map-section">
+        <div class="container">
+            <h2>Goa Attractions Map</h2>
+            <div id="goa-map"></div>
+            <p class="map-note">Click on markers to see more information about each location</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Explore Goa</h3>
+                    <p>Your ultimate guide to India's tropical paradise, helping you discover the real Goa beyond the beaches.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="place.html">Places to Visit</a></li>
+                        <li><a href="food.html">Goan Cuisine</a></li>
+                        <li><a href="stay.html">Accommodation</a></li>
+                        <li><a href="plan.html">Trip Planner</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Panaji, Goa, India</p>
+                    <p><i class="fas fa-phone"></i> +91 9876543210</p>
+                    <p><i class="fas fa-envelope"></i> hello@exploregoa.com</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2023 Explore Goa. All rights reserved. | Designed with <i class="fas fa-heart" style="color: #FF7043;"></i> for Goa</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const burger = document.querySelector('.burger');
+        const navLinks = document.querySelector('.nav-links');
+        const navItems = document.querySelectorAll('.nav-links li');
+
+        burger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            burger.classList.toggle('toggle');
+            document.body.classList.toggle('no-scroll');
+        });
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                burger.classList.remove('toggle');
+                document.body.classList.remove('no-scroll');
+            });
+        });
+
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const placeCards = document.querySelectorAll('.place-card');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                const filter = button.dataset.filter;
+                
+                placeCards.forEach(card => {
+                    if (filter === 'all' || card.dataset.category === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Google Maps Integration
+        function initMap() {
+            const goa = { lat: 15.2993, lng: 74.1240 };
+            const map = new google.maps.Map(document.getElementById("goa-map"), {
+                zoom: 10,
+                center: goa,
+                styles: [
+                    {
+                        "featureType": "poi",
+                        "stylers": [
+                            { "visibility": "off" }
+                        ]
+                    },
+                    {
+                        "featureType": "transit",
+                        "stylers": [
+                            { "visibility": "off" }
+                        ]
+                    }
+                ]
+            });
+            
+            // Add markers for popular places
+            const places = [
+                { 
+                    name: "Calangute Beach", 
+                    position: { lat: 15.5439, lng: 73.7553 },
+                    type: "beach",
+                    icon: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                },
+                { 
+                    name: "Fort Aguada", 
+                    position: { lat: 15.4920, lng: 73.7738 },
+                    type: "fort",
+                    icon: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
+                },
+                { 
+                    name: "Basilica of Bom Jesus", 
+                    position: { lat: 15.5007, lng: 73.9116 },
+                    type: "church",
+                    icon: "https://maps.google.com/mapfiles/ms/icons/yellow-dot.png"
+                },
+                { 
+                    name: "Dudhsagar Falls", 
+                    position: { lat: 15.3142, lng: 74.3140 },
+                    type: "nature",
+                    icon: "https://maps.google.com/mapfiles/ms/icons/green-dot.png"
+                },
+                { 
+                    name: "Palolem Beach", 
+                    position: { lat: 15.0100, lng: 74.0239 },
+                    type: "beach",
+                    icon: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                },
+                { 
+                    name: "Chapora Fort", 
+                    position: { lat: 15.6018, lng: 73.7339 },
+                    type: "fort",
+                    icon: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
+                }
+            ];
+            
+            // Create markers
+            places.forEach(place => {
+                new google.maps.Marker({
+                    position: place.position,
+                    map,
+                    title: place.name,
+                    icon: {
+                        url: place.icon,
+                        scaledSize: new google.maps.Size(32, 32)
+                    }
+                });
+            });
+            
+            // Filter markers when filter buttons are clicked
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const filter = button.dataset.filter;
+                    // You would implement marker filtering logic here
+                });
+            });
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+</body>
+</html>
